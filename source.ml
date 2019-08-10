@@ -1,13 +1,15 @@
-type source_t =
+(* Source.t : type for source language, in Direct Style *)
+type t =
   | Number of int
   | Bool of bool
   | Var of string
-  | Lambda of string * source_t
-  | App of source_t * source_t
-  | Shift of string * source_t
-  | Reset of source_t
+  | Lambda of string * t
+  | App of t * t
+  | Shift of string * t
+  | Reset of t
 
-let rec to_string (exp : source_t) : string = match exp with
+(* convert source language into string *)
+let rec to_string (exp : t) : string = match exp with
   | Number (n) -> string_of_int n
   | Bool (b) -> string_of_bool b
   | Var (x) -> x
@@ -16,3 +18,7 @@ let rec to_string (exp : source_t) : string = match exp with
   | Shift (k, e) -> "(S " ^ k ^ ". " ^ (to_string e) ^ ")"
   | Reset (e) -> "⟨" ^ (to_string e) ^ "⟩"
 
+(* print user input *)
+let print (exp : t) : unit =
+  let str = to_string exp in
+  print_string str

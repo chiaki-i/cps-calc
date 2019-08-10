@@ -11,7 +11,7 @@
 %token EOF
 
 /* type of nonterminating expression */
-%type <Syntax.t> expr
+%type <Source.t> expr
 
 /* declaring a start state */
 %start expr
@@ -28,22 +28,22 @@
 
 simple_expr:
 | NUMBER
-	{ Syntax.Number ($1) }
+	{ Source.Number ($1) }
 | VARIABLE
-	{ Syntax.Variable ($1) }
+	{ Source.Var ($1) }
 | TRUE
-	{ Syntax.Bool (true) }
+	{ Source.Bool (true) }
 | FALSE
-	{ Syntax.Bool (false) }
+	{ Source.Bool (false) }
 | LPAREN expr RPAREN
     { $2 }
 | LRESET expr RRESET
-    { Syntax.Reset ($2) }
+    { Source.Reset ($2) }
 
 expr:
 | simple_expr
 	{ $1 }
 | LAMBDA VARIABLE DOT expr
-	{ Syntax.lambda ($2, $4) }
+	{ Source.Lambda ($2, $4) }
 | expr APP expr
-	{ Syntax.Op ($1, Syntax.App, $3) }
+	{ Source.App ($1, $3) }
